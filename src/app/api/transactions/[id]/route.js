@@ -5,7 +5,7 @@ import { transactionSchema } from "@/lib/validations/validateTransaction.js";
 export async function PUT(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     // Validate request body
@@ -45,7 +45,7 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const { id } = params;
+    const { id } = await params;
 
     const deletedTransaction = await Transaction.findByIdAndDelete(id);
 
