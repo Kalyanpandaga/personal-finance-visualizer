@@ -1,16 +1,23 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+
 export function TransactionList({ transactions, refreshTransactions }) {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`/api/transactions/${id}`, {
         method: "DELETE",
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete transaction");
-      }
-
+      if (!response.ok) throw new Error("Failed to delete transaction");
       refreshTransactions();
     } catch (error) {
       console.error(error);
@@ -18,50 +25,48 @@ export function TransactionList({ transactions, refreshTransactions }) {
   };
 
   return (
-    <div className="p-4 border rounded-xl shadow-sm bg-white mb-6">
-      <h2 className="text-xl font-bold mb-4">Transactions</h2>
-
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr>
-              <th className="p-2 border-b">Amount</th>
-              <th className="p-2 border-b">Date</th>
-              <th className="p-2 border-b">Description</th>
-              <th className="p-2 border-b">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="text-center p-4">
-                  No transactions found.
-                </td>
-              </tr>
-            ) : (
-              transactions.map((transaction) => (
-                <tr key={transaction._id}>
-                  <td className="p-2 border-b">
-                    ${transaction.amount.toFixed(2)}
-                  </td>
-                  <td className="p-2 border-b">
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Transactions</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {transactions.length === 0 ? (
+          <div className="text-center text-muted-foreground py-6">
+            No transactions found.
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Amount</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {transactions.map((transaction) => (
+                <TableRow key={transaction._id}>
+                  <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+                  <TableCell>
                     {new Date(transaction.date).toLocaleDateString()}
-                  </td>
-                  <td className="p-2 border-b">{transaction.description}</td>
-                  <td className="p-2 border-b">
-                    <button
+                  </TableCell>
+                  <TableCell>{transaction.description}</TableCell>
+                  <TableCell>
+                    <Button
+                      className="cursor-pointer"
+                      variant="destructive"
                       onClick={() => handleDelete(transaction._id)}
-                      className="text-red-600 hover:underline"
                     >
                       Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+    </Card>
   );
 }

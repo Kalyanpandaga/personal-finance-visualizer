@@ -1,45 +1,39 @@
 "use client";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { format } from "date-fns";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 export function MonthlyBarChart({ transactions }) {
-  const monthlyData = {};
+  const monthlyTotals = {};
 
   transactions.forEach((transaction) => {
-    const month = format(new Date(transaction.date), "MMM yyyy");
-
-    if (!monthlyData[month]) {
-      monthlyData[month] = 0;
-    }
-
-    monthlyData[month] += transaction.amount;
+    const date = new Date(transaction.date);
+    const month = date.toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    });
+    monthlyTotals[month] = (monthlyTotals[month] || 0) + transaction.amount;
   });
 
-  const chartData = Object.entries(monthlyData).map(([month, amount]) => ({
+  const chartData = Object.entries(monthlyTotals).map(([month, total]) => ({
     month,
-    amount,
+    total,
   }));
 
   return (
-    <div className="p-4 border rounded-xl shadow-sm bg-white mb-6">
-      <h2 className="text-xl font-bold mb-4">Monthly Expenses</h2>
-
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="amount" fill="#3b82f6" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Monthly Expenses</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Bar dataKey="total" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
   );
 }

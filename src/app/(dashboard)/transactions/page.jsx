@@ -1,8 +1,9 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import { TransactionForm } from "@/components/TransactionForm";
 import { TransactionList } from "@/components/TransactionList";
 import { MonthlyBarChart } from "@/components/MonthlyBarChart";
-import { useEffect, useState } from "react";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState([]);
@@ -22,7 +23,7 @@ export default function TransactionsPage() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container max-w-4xl mx-auto p-4 space-y-8">
       <TransactionForm refreshTransactions={fetchTransactions} />
       <TransactionList
         transactions={transactions}
