@@ -59,15 +59,3 @@ npm run dev
 Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
 ---
-
----
-
-## 📈 Upcoming Improvements (Stage 2 and beyond)
-
-- Filters (e.g., by month, category)
-- Edit / Delete transactions
-- Better responsive design
-- Pie chart for expense categories
-- Authentication (login/logout)
-
----
