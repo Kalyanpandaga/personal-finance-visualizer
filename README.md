@@ -28,7 +28,7 @@ A simple web app to track your income and expenses, built with **Next.js 14 App 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/personal-finance-visualizer.git
+git clone https://github.com/kalyanpandata/personal-finance-visualizer.git
 cd personal-finance-visualizer
 ```
 
